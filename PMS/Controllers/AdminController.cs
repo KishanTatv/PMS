@@ -27,5 +27,12 @@ namespace PMS.Controllers
             JsonResult data = await _adminService.AddNewUser(reqModel);
             return data;
         }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> GetCategory(PageCommonDto requestData)
+        {
+            JsonResult data = await _adminService.GetCategory(requestData);
+            return data;
+        }
     }
 }

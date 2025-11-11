@@ -9,33 +9,42 @@ namespace PMS.Repository.Implements
     {
 
         private readonly IGenericRepository<User> _userRepository;
-        private readonly Mapper _mapper;
+        private readonly IGenericRepository<Category> _categoryRepository;
 
-        public AdminRepository(IGenericRepository<User> userRepository, Mapper mapper)
+        public AdminRepository(IGenericRepository<User> userRepository, IGenericRepository<Category> categoryRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
-            return _mapper.ToListUserResponse(await _userRepository.GetAll());
+            var userData = await _userRepository.GetAll(orderBy: o => o.OrderByDescending(u => u.CreatedDate));
+            return new UserMapper().MapList(userData);
         }
 
         public async Task<int> AddNewUser(UserDto user)
         {
             var newUser = new User()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNo = user.PhoneNo,
+                Email = user.Email,
                 CreatedBy = "1",
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                LastUpdatedDate = DateTime.UtcNow
             };
             await _userRepository.Add(newUser);
             return await _userRepository.SaveChangesAsync();
             
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData)
+        {
+            var categoryData = await _categoryRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
+            return new CategoryMapper().MapList(categoryData);
         }
     }
 }

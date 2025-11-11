@@ -19,7 +19,7 @@ namespace PMS.Data
             return await _readDbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
+        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, int? skip = null, int? take = null)
         {
             IQueryable<T> query = _readDbContext.Set<T>();
             if (filter != null)
@@ -29,6 +29,14 @@ namespace PMS.Data
             if (orderBy != null)
             {
                 query = orderBy(query);
+            }
+            if (skip.HasValue)
+            {
+                query = query.Skip(skip.Value);
+            }
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
             }
             return await query.ToListAsync();
         }

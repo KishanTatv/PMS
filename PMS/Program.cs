@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PMS.Common.Middleware;
 using PMS.Data;
 using PMS.Data.Data;
 using PMS.Data.Interface;
@@ -41,6 +42,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

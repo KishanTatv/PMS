@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PMS.Common\PMS.Common.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PMS.Entity\PMS.Entity.csproj" />
-    <ProjectReference Include="..\PMS.Repository\PMS.Repository.csproj" />
   </ItemGroup>
 
 </Project>

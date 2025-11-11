@@ -10,6 +10,7 @@ namespace PMS.Data.Data
             : base(options) { }
 
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

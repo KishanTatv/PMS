@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace PMS.Data.Models;
-
-[Table("User")]
-public partial class User
+namespace PMS.Data.Models
 {
-    [Key]
-    [StringLength(20)]
-    public string Id { get; set; } = null!;
+    public class User
+    {
+        [Key]
+        public Guid Id { get; set; }
+        [Required]
+        public string FirstName { get; set; } = null!;
+        public string LastName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+        public string PhoneNo { get; set; } = null!;
+        public string CreatedBy { get; set; } = null!;
+        public DateTime CreatedDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
 
-    [StringLength(30)]
-    public string? FirstName { get; set; }
-
-    [StringLength(30)]
-    public string? LastName { get; set; }
-
-    [StringLength(20)]
-    public string? PhoneNo { get; set; }
-
-    [StringLength(20)]
-    public string? CreatedBy { get; set; }
-
-    public DateTime? CreatedDate { get; set; }
+    }
 }

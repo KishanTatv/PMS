@@ -35,6 +35,10 @@ namespace PMS.Entity
             return GenerateResponse(false, string.Empty, statusCode, message);
         }
 
+        public static JsonResult InternalServerErrorResponse(string? message = "An unexpected error occurred. Please try again later.")
+        {
+            return GenerateResponse(false, string.Empty, HttpStatusCode.InternalServerError, message);
+        }
 
     }
 }
