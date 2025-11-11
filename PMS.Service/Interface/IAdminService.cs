@@ -8,5 +8,6 @@ namespace PMS.Service.Interface
         Task<JsonResult> GetAllUsers();
         Task<JsonResult> AddNewUser(UserDto user);
         Task<JsonResult> GetCategory(PageCommonDto requestData);
+        Task<JsonResult> AddCategory(CategoryDto category);
     }
 }

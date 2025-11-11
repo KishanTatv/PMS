@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Data", "PMS.Data\PMS.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.Common", "PMS.Common\PMS.Common.csproj", "{4118D1BA-BC41-4EBC-BB94-57C68BF13E4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMS.WEB", "PMS.WEB\PMS.WEB.csproj", "{42B8AA5D-8BF9-457A-B328-2B502ADE3155}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4118D1BA-BC41-4EBC-BB94-57C68BF13E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4118D1BA-BC41-4EBC-BB94-57C68BF13E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4118D1BA-BC41-4EBC-BB94-57C68BF13E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42B8AA5D-8BF9-457A-B328-2B502ADE3155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B8AA5D-8BF9-457A-B328-2B502ADE3155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B8AA5D-8BF9-457A-B328-2B502ADE3155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B8AA5D-8BF9-457A-B328-2B502ADE3155}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

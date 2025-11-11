@@ -28,10 +28,18 @@ namespace PMS.Controllers
             return data;
         }
 
-        [HttpPost("[action]")]
-        public async Task<ActionResult> GetCategory(PageCommonDto requestData)
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetCategory([FromQuery]PageCommonDto requestData)
         {
             JsonResult data = await _adminService.GetCategory(requestData);
+            return data;
+        }
+
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> AddCategory(CategoryDto reqModel)
+        {
+            JsonResult data = await _adminService.AddCategory(reqModel);
             return data;
         }
     }

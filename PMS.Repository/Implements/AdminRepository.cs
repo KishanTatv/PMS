@@ -38,13 +38,25 @@ namespace PMS.Repository.Implements
             };
             await _userRepository.Add(newUser);
             return await _userRepository.SaveChangesAsync();
-            
+
         }
 
         public async Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData)
         {
             var categoryData = await _categoryRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
             return new CategoryMapper().MapList(categoryData);
+        }
+
+        public async Task<int> AddNewCategory(CategoryDto category)
+        {
+            var newCategory = new Category()
+            {
+                Name = category.Name,
+                DisplayOrder = category.DisplayOrder,
+                CreatedDateTime = DateTime.UtcNow
+            };
+            await _categoryRepository.Add(newCategory);
+            return await _categoryRepository.SaveChangesAsync();
         }
     }
 }

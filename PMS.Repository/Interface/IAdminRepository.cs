@@ -7,5 +7,6 @@ namespace PMS.Repository.Interface
         Task<IEnumerable<UserDto>> GetAllUsers();
         Task<int> AddNewUser(UserDto user);
         Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData);
+        Task<int> AddNewCategory(CategoryDto category);
     }
 }
