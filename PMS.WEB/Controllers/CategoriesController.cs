@@ -21,7 +21,7 @@ namespace PMS.WEB.Controllers
 
         public IActionResult IsCategoryNameInUse(string name)
         {
-            if(name.ToLower() == "Test".ToLower())
+            if (name.ToLower() == "Test".ToLower())
             {
                 return Json($"Category name '{name}' is already in use.");
             }
@@ -30,13 +30,13 @@ namespace PMS.WEB.Controllers
 
         public IActionResult AddCategory(CategoryDto categoryDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View("Create");
             }
             HttpResponseMessage response = _httpClient.PostAsJsonAsync("Admin/AddCategory", categoryDto).Result;
             ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
-            if(apiResponse.Result)
+            if (apiResponse.Result)
             {
                 return RedirectToAction("Index", "Home");
             }
