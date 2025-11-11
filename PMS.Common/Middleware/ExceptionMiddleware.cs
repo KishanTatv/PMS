@@ -25,7 +25,7 @@ namespace PMS.Common.Middleware
                 context.Response.ContentType = "application/json";
                 var response = new ApiResponse<string>()
                 {
-                    Result =  false,
+                    Result = false,
                     Data = string.Empty,
                     StatusCode = HttpStatusCode.InternalServerError,
                     Message = "An unexpected error occurred. Please try again later."

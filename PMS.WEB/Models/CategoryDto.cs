@@ -8,7 +8,7 @@ namespace PMS.Entity.Models
     {
         public int Id { get; set; }
         [Required]
-        [MaxLength(20, ErrorMessage="name must be 20 character.")]
+        [MaxLength(20, ErrorMessage = "name must be 20 character.")]
         [Remote(action: "IsCategoryNameInUse", controller: "Categories", ErrorMessage = "Category name already exists.")]
         public string Name { get; set; } = null!;
         [DisplayName("Order")]
