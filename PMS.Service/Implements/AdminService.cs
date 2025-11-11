@@ -10,15 +10,14 @@ namespace PMS.Service.Implements
     public class AdminService : IAdminService
     {
         private readonly IAdminRepository _adminRepository;
-        public AdminService(IAdminRepository adminRepository)
-        {
+        public AdminService(IAdminRepository adminRepository) {
             _adminRepository = adminRepository;
         }
 
         public async Task<JsonResult> GetAllUsers()
         {
-            IEnumerable<UserDto> userList = await _adminRepository.GetAllUsers();
-            return JsonResponse.SuccessResponse(userList, string.Format(Messages.success, "User list", "retrived"));
+           IEnumerable<UserDto> userList = await _adminRepository.GetAllUsers();
+           return JsonResponse.SuccessResponse(userList, string.Format(Messages.success, "User list", "retrived"));
         }
 
         public async Task<JsonResult> AddNewUser(UserDto user)

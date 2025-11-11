@@ -4,6 +4,7 @@ using PMS.Entity;
 using PMS.Entity.Models;
 using PMS.WEB.Models;
 using System.Diagnostics;
+using System.Net.Http;
 
 namespace PMS.WEB.Controllers
 {
@@ -24,7 +25,7 @@ namespace PMS.WEB.Controllers
         {
             List<CategoryDto> data = new List<CategoryDto>();
             HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCategory?pageNumber={request.PageNumber}&pageSize={request.PageSize}");
-            if (response.IsSuccessStatusCode)
+            if(response.IsSuccessStatusCode)
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 ApiResponse<List<CategoryDto>>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<CategoryDto>>>(jsonResponse);

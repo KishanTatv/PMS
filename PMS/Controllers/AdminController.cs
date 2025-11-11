@@ -29,7 +29,7 @@ namespace PMS.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult> GetCategory([FromQuery] PageCommonDto requestData)
+        public async Task<ActionResult> GetCategory([FromQuery]PageCommonDto requestData)
         {
             JsonResult data = await _adminService.GetCategory(requestData);
             return data;

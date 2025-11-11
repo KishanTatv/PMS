@@ -22,7 +22,7 @@ builder.Services.AddDbContext<PmsReadDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ReadConnection"))
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
-builder.Services.AddScoped<IReadDbContext, PmsReadDbContext>();
+builder.Services.AddScoped<IReadDbContext,  PmsReadDbContext>();
 builder.Services.AddScoped<IWriteDbContext, PmsWriteDbContext>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
