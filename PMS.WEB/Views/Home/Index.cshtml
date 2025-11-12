@@ -6,57 +6,6 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 
-    <button class="float-end"> <a asp-controller="Categories" asp-action="Create">Create New Category</a> </button>
-
-    <br />
-    <table class="table">
-        <thead>
-            <tr>
-                <th colspan="3" scope="col"><p>Project Management System</p></th>
-            </tr>
-            <tr>
-                <th scope="col">Category Name</th>
-                <th scope="col">Total Item</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var item in Model){
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.DisplayOrder</td>
-                    <td>
-                        <a asp-action="delete">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end me-3 pb-2">
-
-            <li class="page-item">
-                <a class="page-link text-warning"
-                   asp-action="Index"
-                   asp-controller="Home"
-                   asp-route-PageNumber="0"
-                   asp-route-PageSize="5">
-                    1
-                </a>
-            </li>
-
-            <li class="page-item">
-                <a class="page-link text-warning"
-                   asp-action="Index"
-                   asp-controller="Home"
-                   asp-route-PageNumber="1"
-                   asp-route-PageSize="5">
-                    2
-                </a>
-            </li>
-
-        </ul>
-    </nav>
-
+  
 
 </div>

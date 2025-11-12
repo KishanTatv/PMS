@@ -11,26 +11,15 @@ namespace PMS.WEB.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly HttpClient _httpClient;
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7071/api/");
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(PageCommonDto request)
+        public IActionResult Index()
         {
-            List<CategoryDto> data = new List<CategoryDto>();
-            HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCategory?pageNumber={request.PageNumber}&pageSize={request.PageSize}");
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonResponse = await response.Content.ReadAsStringAsync();
-                ApiResponse<List<CategoryDto>>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<CategoryDto>>>(jsonResponse);
-                data = apiResponse.Data;
-            }
-            return View(data);
+            return View();
         }
 
         public IActionResult create()

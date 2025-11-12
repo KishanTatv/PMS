@@ -5,11 +5,11 @@ using PMS.Entity.Models;
 
 namespace PMS.WEB.Controllers
 {
-    public class CategoriesController : Controller
+    public class CoverController : Controller
     {
         private readonly HttpClient _httpClient;
 
-        public CategoriesController()
+        public CoverController()
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7071/api/");
@@ -17,12 +17,12 @@ namespace PMS.WEB.Controllers
 
         public async Task<IActionResult> Index(PageCommonDto request)
         {
-            List<CategoryDto> data = new List<CategoryDto>();
-            HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCategory?pageNumber={request.PageNumber}&pageSize={request.PageSize}");
+            List<CoverDto> data = new List<CoverDto>();
+            HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCover?pageNumber={request.PageNumber}&pageSize={request.PageSize}");
             if (response.IsSuccessStatusCode)
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-                ApiResponse<List<CategoryDto>>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<CategoryDto>>>(jsonResponse);
+                ApiResponse<List<CoverDto>>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<CoverDto>>>(jsonResponse);
                 data = apiResponse.Data;
             }
             return View(data);
@@ -33,26 +33,17 @@ namespace PMS.WEB.Controllers
             return View();
         }
 
-        public IActionResult IsCategoryNameInUse(string name)
-        {
-            if (name.ToLower() == "Test".ToLower())
-            {
-                return Json($"Category name '{name}' is already in use.");
-            }
-            return Json(true);
-        }
-
-        public IActionResult AddCategory(CategoryDto categoryDto)
+        public IActionResult AddCover(CoverDto coverDto)
         {
             if (!ModelState.IsValid)
             {
                 return View("Create");
             }
-            HttpResponseMessage response = _httpClient.PostAsJsonAsync("Admin/AddCategory", categoryDto).Result;
+            HttpResponseMessage response = _httpClient.PostAsJsonAsync("Admin/AddUpdateCover", coverDto).Result;
             ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
             if (apiResponse != null && apiResponse.Result)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             return View();
         }
