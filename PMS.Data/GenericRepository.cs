@@ -56,15 +56,17 @@ namespace PMS.Data
             await _writeDbContext.Set<T>().AddAsync(entity);
         }
 
+        public async Task Update(T entity)
+        {
+            _writeDbContext.Set<T>().Update(entity);
+            await Task.CompletedTask;
+        }
+
         public void Delete(T entity)
         {
             _writeDbContext.Set<T>().Remove(entity);
         }
 
-        public void Update(T entity)
-        {
-            _writeDbContext.Set<T>().Update(entity);
-        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

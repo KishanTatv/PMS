@@ -42,5 +42,33 @@ namespace PMS.Controllers
             JsonResult data = await _adminService.AddCategory(reqModel);
             return data;
         }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetCover([FromQuery] PageCommonDto requestData)
+        {
+            JsonResult data = await _adminService.GetCover(requestData);
+            return data;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> AddUpdateCover(CoverDto reqModel)
+        {
+            JsonResult data = await _adminService.AddUpdateCover(reqModel);
+            return data;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetProduct([FromQuery] PageCommonDto requestData)
+        {
+            JsonResult data = await _adminService.GetProduct(requestData);
+            return data;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> AddUpdateProduct(ProductDetailDto reqModel)
+        {
+            JsonResult data = await _adminService.AddUpdateProduct(reqModel);
+            return data;
+        }
     }
 }

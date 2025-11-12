@@ -17,6 +17,18 @@ namespace PMS.Repository
         public partial IEnumerable<CategoryDto> MapList(IEnumerable<Category> request);
     }
 
+    [Mapper]
+    public partial class CoverMapper
+    {
+        public partial IEnumerable<CoverDto> MapList(IEnumerable<CoverType> product);
+    }
+
+    [Mapper]
+    public partial class ProductMapper
+    {
+        public partial IEnumerable<ProductDto> MapList(IEnumerable<Product> product);
+    }
+
 
     [Mapper]
     public partial class UserMapper

@@ -10,13 +10,18 @@ namespace PMS.Repository.Implements
 
         private readonly IGenericRepository<User> _userRepository;
         private readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IGenericRepository<CoverType> _coverRepository;
+        private readonly IGenericRepository<Product> _productRepository;
 
-        public AdminRepository(IGenericRepository<User> userRepository, IGenericRepository<Category> categoryRepository)
+        public AdminRepository(IGenericRepository<User> userRepository, IGenericRepository<Category> categoryRepository, IGenericRepository<CoverType> coverRepository, IGenericRepository<Product> productRepository)
         {
             _userRepository = userRepository;
             _categoryRepository = categoryRepository;
+            _coverRepository = coverRepository;
+            _productRepository = productRepository;
         }
 
+        #region User Methods
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             var userData = await _userRepository.GetAll(orderBy: o => o.OrderByDescending(u => u.CreatedDate));
@@ -40,6 +45,7 @@ namespace PMS.Repository.Implements
             return await _userRepository.SaveChangesAsync();
 
         }
+        #endregion
 
         public async Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData)
         {
@@ -57,6 +63,62 @@ namespace PMS.Repository.Implements
             };
             await _categoryRepository.Add(newCategory);
             return await _categoryRepository.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<CoverDto>> GetCover(PageCommonDto requestData)
+        {
+            var categoryData = await _coverRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
+            return new CoverMapper().MapList(categoryData);
+        }
+
+        public async Task<int> AddUpdateCover(CoverDto category)
+        {
+            CoverType newCover = new CoverType() { Name = category.Name };
+            if (category.Id > 0)
+            {
+                newCover.Id = category.Id;
+                await _coverRepository.Update(newCover);
+            }
+            else
+            {
+                await _coverRepository.Add(newCover);
+            }
+            return await _coverRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProduct(PageCommonDto requestData)
+        {
+            var productData = await _productRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
+            return new ProductMapper().MapList(productData);
+        }
+
+        public async Task<int> AddUpdateProduct(ProductDetailDto product)
+        {
+            Product newProduct = new Product()
+            {
+                Title = product.Title,
+                Author = product.Author,
+                Description = product.Description,
+                ISBN = product.ISBN,
+                ListPrice = product.ListPrice,
+                Price = product.Price,
+                Price50 = product.Price50,
+                Price100 = product.Price100,
+                CategoryId = product.CategoryId,
+                CoverTypeId = product.CoverTypeId,
+                ImageUrl = product.ImageUrl
+            };
+            if (product.Id > 0)
+            {
+                newProduct.Id = product.Id;
+                await _productRepository.Update(newProduct);
+            }
+            else
+            {
+                await _productRepository.Add(newProduct);
+            }
+            return await _productRepository.SaveChangesAsync();
         }
     }
 }

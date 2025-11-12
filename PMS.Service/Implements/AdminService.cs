@@ -46,5 +46,37 @@ namespace PMS.Service.Implements
             }
             return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "New category", "added"));
         }
+
+        public async Task<JsonResult> GetCover(PageCommonDto requestData)
+        {
+            IEnumerable<CoverDto> coverList = await _adminRepository.GetCover(requestData);
+            return JsonResponse.SuccessResponse(coverList, string.Format(Messages.success, "Cover list", "retrived"));
+        }
+
+        public async Task<JsonResult> AddUpdateCover(CoverDto requestModel)
+        {
+            int rowCount = await _adminRepository.AddUpdateCover(requestModel);
+            if (rowCount <= 0)
+            {
+                return JsonResponse.FailureResponse(string.Format(Messages.failure, requestModel.Id > 0 ? "update" : "add", "cover"));
+            }
+            return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "Cover", requestModel.Id > 0 ? "update" : "add"));
+        }
+
+        public async Task<JsonResult> GetProduct(PageCommonDto requestData)
+        {
+            IEnumerable<ProductDto> productList = await _adminRepository.GetProduct(requestData);
+            return JsonResponse.SuccessResponse(productList, string.Format(Messages.success, "Product list", "retrived"));
+        }
+
+        public async Task<JsonResult> AddUpdateProduct(ProductDetailDto requestModel)
+        {
+            int rowCount = await _adminRepository.AddUpdateProduct(requestModel);
+            if (rowCount <= 0)
+            {
+                return JsonResponse.FailureResponse(string.Format(Messages.failure, requestModel.Id > 0 ? "update" : "add", "product"));
+            }
+            return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "Product", requestModel.Id > 0 ? "update" : "add"));
+        }
     }
 }

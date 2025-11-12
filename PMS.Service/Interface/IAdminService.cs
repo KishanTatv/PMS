@@ -9,5 +9,9 @@ namespace PMS.Service.Interface
         Task<JsonResult> AddNewUser(UserDto user);
         Task<JsonResult> GetCategory(PageCommonDto requestData);
         Task<JsonResult> AddCategory(CategoryDto category);
+        Task<JsonResult> GetCover(PageCommonDto requestData);
+        Task<JsonResult> AddUpdateCover(CoverDto category);
+        Task<JsonResult> GetProduct(PageCommonDto requestData);
+        Task<JsonResult> AddUpdateProduct(ProductDetailDto product);
     }
 }
