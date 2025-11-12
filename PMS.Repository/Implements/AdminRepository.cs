@@ -47,6 +47,7 @@ namespace PMS.Repository.Implements
         }
         #endregion
 
+        #region Category 
         public async Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData)
         {
             var categoryData = await _categoryRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
@@ -61,11 +62,31 @@ namespace PMS.Repository.Implements
                 DisplayOrder = category.DisplayOrder,
                 CreatedDateTime = DateTime.UtcNow
             };
-            await _categoryRepository.Add(newCategory);
+            if(category.Id > 0)
+            {
+                newCategory.Id = category.Id;
+                await _categoryRepository.Update(newCategory);
+            }
+            else
+            {
+                await _categoryRepository.Add(newCategory);
+            }
             return await _categoryRepository.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteCategory(int categoryId)
+        {
+            var category = await _categoryRepository.GetById(categoryId);
+            if (category != null)
+            {
+                _categoryRepository.Delete(category);
+                return await _categoryRepository.SaveChangesAsync();
+            }
+            return 0;
+        }
+        #endregion
 
+        #region Cover
         public async Task<IEnumerable<CoverDto>> GetCover(PageCommonDto requestData)
         {
             var categoryData = await _coverRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
@@ -87,10 +108,40 @@ namespace PMS.Repository.Implements
             return await _coverRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProduct(PageCommonDto requestData)
+        public async Task<int> DeleteCover(int coverId)
         {
-            var productData = await _productRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
-            return new ProductMapper().MapList(productData);
+            var cover = await _coverRepository.GetById(coverId);
+            if (cover != null)
+            {
+                _coverRepository.Delete(cover);
+                return await _coverRepository.SaveChangesAsync();
+            }
+            return 0;
+        }
+        #endregion
+
+        #region Product
+        public async Task<IEnumerable<ProductShowDto>> GetProduct(PageCommonDto requestData)
+        {
+            //var productData = await _productRepository.GetAll(
+            //    skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize,
+            //    includes: [p => p.Category, p => p.CoverType]
+            //    );
+            var productData = await _productRepository.GetAllProjected(
+                selector: p => new ProductShowDto
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Author = p.Author,
+                    ISBN = p.ISBN,
+                    Price = p.Price,
+                    CategoryName = p.Category!.Name,
+                    CoverTypeName = p.CoverType!.Name
+                },
+                skip: requestData.PageNumber * requestData.PageSize,
+                take: requestData.PageSize
+                );
+            return productData;
         }
 
         public async Task<int> AddUpdateProduct(ProductDetailDto product)
@@ -107,7 +158,7 @@ namespace PMS.Repository.Implements
                 Price100 = product.Price100,
                 CategoryId = product.CategoryId,
                 CoverTypeId = product.CoverTypeId,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl ?? string.Empty
             };
             if (product.Id > 0)
             {
@@ -120,5 +171,17 @@ namespace PMS.Repository.Implements
             }
             return await _productRepository.SaveChangesAsync();
         }
+
+        public async Task<int> DeleteProduct(int productId)
+        {
+            var product = await _productRepository.GetById(productId);
+            if (product != null)
+            {
+                _productRepository.Delete(product);
+                return await _productRepository.SaveChangesAsync();
+            }
+            return 0;
+        }
+        #endregion
     }
 }

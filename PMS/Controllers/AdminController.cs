@@ -43,6 +43,13 @@ namespace PMS.Controllers
             return data;
         }
 
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteCategory(int categoryId)
+        {
+            JsonResult data = await _adminService.DeleteCategory(categoryId);
+            return data;
+        }
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetCover([FromQuery] PageCommonDto requestData)
         {
@@ -57,6 +64,13 @@ namespace PMS.Controllers
             return data;
         }
 
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteCover(int coverId)
+        {
+            JsonResult data = await _adminService.DeleteCover(coverId);
+            return data;
+        }
+
         [HttpGet("[action]")]
         public async Task<ActionResult> GetProduct([FromQuery] PageCommonDto requestData)
         {
@@ -68,6 +82,13 @@ namespace PMS.Controllers
         public async Task<ActionResult> AddUpdateProduct(ProductDetailDto reqModel)
         {
             JsonResult data = await _adminService.AddUpdateProduct(reqModel);
+            return data;
+        }
+
+        [HttpDelete("[action]")]
+        public async Task<ActionResult> DeleteProduct(int productId)
+        {
+            JsonResult data = await _adminService.DeleteProduct(productId);
             return data;
         }
     }

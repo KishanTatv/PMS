@@ -24,9 +24,47 @@ namespace PMS.Data
             return await _readDbContext.Set<T>().Where(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, int? skip = null, int? take = null)
+        public async Task<IEnumerable<T>> GetAll(
+            Expression<Func<T, bool>>? filter = null, 
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, 
+            int? skip = null, 
+            int? take = null, 
+            params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _readDbContext.Set<T>();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            if (skip.HasValue)
+            {
+                query = query.Skip(skip.Value);
+            }
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<TResult>> GetAllProjected<TResult>(
+            Expression<Func<T, TResult>> selector,
+            Expression<Func<T, bool>>? filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            int? skip = null,
+            int? take = null)
+        {
+            IQueryable<T> query = _readDbContext.Set<T>();
+
             if (filter != null)
             {
                 query = query.Where(filter);
@@ -43,7 +81,7 @@ namespace PMS.Data
             {
                 query = query.Take(take.Value);
             }
-            return await query.ToListAsync();
+            return await query.Select(selector).ToListAsync();
         }
 
         public async Task<IQueryable<T>> Query()
@@ -59,7 +97,6 @@ namespace PMS.Data
         public async Task Update(T entity)
         {
             _writeDbContext.Set<T>().Update(entity);
-            await Task.CompletedTask;
         }
 
         public void Delete(T entity)
