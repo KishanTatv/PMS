@@ -36,7 +36,7 @@ namespace PMS.WEB.Controllers
             }
             HttpResponseMessage response = _httpClient.PostAsJsonAsync("Admin/AddCategory", categoryDto).Result;
             ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
-            if (apiResponse.Result)
+            if (apiResponse != null && apiResponse.Result)
             {
                 return RedirectToAction("Index", "Home");
             }

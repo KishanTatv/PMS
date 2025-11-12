@@ -19,6 +19,11 @@ namespace PMS.Data
             return await _readDbContext.Set<T>().FindAsync(id);
         }
 
+        public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        {
+            return await _readDbContext.Set<T>().Where(filter).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, int? skip = null, int? take = null)
         {
             IQueryable<T> query = _readDbContext.Set<T>();

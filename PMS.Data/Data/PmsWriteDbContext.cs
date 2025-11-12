@@ -6,19 +6,21 @@ namespace PMS.Data.Data;
 
 public partial class PmsWriteDbContext : DbContext, IWriteDbContext
 {
-    public PmsWriteDbContext()
-    {
-    }
 
     public PmsWriteDbContext(DbContextOptions<PmsWriteDbContext> options)
         : base(options)
     {
+
     }
 
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
+    public virtual DbSet<CoverType> CoverTypes { get; set; } = null!;
+    public virtual DbSet<Product> Products { get; set; } = null!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Name=WriteConnection");
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
 
 }

@@ -11,6 +11,9 @@ namespace PMS.Data.Data
 
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<CoverType> CoverTypes { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
