@@ -16,6 +16,7 @@ namespace PMS.Repository.Interface
         Task<int> DeleteCover(int coverId);
 
         Task<IEnumerable<ProductShowDto>> GetProduct(PageCommonDto requestData);
+        Task<ProductDetailDto> GetProductById(int productId);
         Task<int> AddUpdateProduct(ProductDetailDto product);
         Task<int> DeleteProduct(int productId);
     }

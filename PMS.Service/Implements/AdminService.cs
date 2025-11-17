@@ -89,6 +89,12 @@ namespace PMS.Service.Implements
             return JsonResponse.SuccessResponse(productList, string.Format(Messages.success, "Product list", "retrived"));
         }
 
+        public async Task<JsonResult> GetProductById(int productId)
+        {
+            ProductDetailDto product = await _adminRepository.GetProductById(productId);
+            return JsonResponse.SuccessResponse(product, string.Format(Messages.success, "Product detail", "retrived"));
+        }
+
         public async Task<JsonResult> AddUpdateProduct(ProductDetailDto requestModel)
         {
             int rowCount = await _adminRepository.AddUpdateProduct(requestModel);

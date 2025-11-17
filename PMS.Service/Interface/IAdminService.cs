@@ -17,6 +17,7 @@ namespace PMS.Service.Interface
         Task<JsonResult> DeleteCover(int coverId);
 
         Task<JsonResult> GetProduct(PageCommonDto requestData);
+        Task<JsonResult> GetProductById(int productId);
         Task<JsonResult> AddUpdateProduct(ProductDetailDto product);
         Task<JsonResult> DeleteProduct(int productId);
     }

@@ -29,12 +29,23 @@ namespace PMS.WEB.Controllers
             return View(data);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int productId)
         {
             HttpResponseMessage response1 = await _httpClient.GetAsync($"Admin/GetCover?pageNumber=0&pageSize=10");
             HttpResponseMessage response2 = await _httpClient.GetAsync($"Admin/GetCategory?pageNumber=0&pageSize=10");
             IEnumerable<SelectListItem> coverList = new List<SelectListItem>();
             IEnumerable<SelectListItem> categoryList = new List<SelectListItem>();
+            ProductDetailDto productDetailDto = new ProductDetailDto();
+            if (productId > 0)
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetProductById?productId={productId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    ApiResponse<ProductDetailDto>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductDetailDto>>(jsonResponse);
+                    productDetailDto = apiResponse.Data;
+                }
+            }
             await response1.Content.ReadFromJsonAsync<ApiResponse<List<CoverDto>>>().ContinueWith(task =>
             {
                 var apiResponse = task.Result;
@@ -55,7 +66,7 @@ namespace PMS.WEB.Controllers
                 });
                 ViewBag.CategoryList = categoryList;
             });
-            return View();
+            return View(productDetailDto);
         }
 
 
@@ -72,6 +83,17 @@ namespace PMS.WEB.Controllers
                 return View("Create");
             }
             return View("Create");
+        }
+
+        public async Task<IActionResult> Delete(int productId)
+        {
+            HttpResponseMessage response = _httpClient.DeleteAsync($"Admin/DeleteProduct?productId={productId}").Result;
+            ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
+            if (apiResponse != null && apiResponse.Result)
+            {
+                return RedirectToAction("Index");
+            }
+            return View("Index");
         }
     }
 }

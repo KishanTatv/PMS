@@ -144,6 +144,30 @@ namespace PMS.Repository.Implements
             return productData;
         }
 
+        public async Task<ProductDetailDto> GetProductById(int productId)
+        {
+            var product = await _productRepository.GetById(productId);
+            if (product != null)
+            {
+                return new ProductDetailDto()
+                {
+                    Id = product.Id,
+                    Title = product.Title,
+                    Author = product.Author,
+                    Description = product.Description,
+                    ISBN = product.ISBN,
+                    ListPrice = product.ListPrice,
+                    Price = product.Price,
+                    Price50 = product.Price50,
+                    Price100 = product.Price100,
+                    CategoryId = product.CategoryId,
+                    CoverTypeId = product.CoverTypeId,
+                    ImageUrl = product.ImageUrl
+                };
+            }
+            return null!;
+        }
+
         public async Task<int> AddUpdateProduct(ProductDetailDto product)
         {
             Product newProduct = new Product()

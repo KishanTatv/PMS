@@ -78,6 +78,13 @@ namespace PMS.Controllers
             return data;
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetProductById(int productId)
+        {
+            JsonResult data = await _adminService.GetProductById(productId);
+            return data;
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult> AddUpdateProduct(ProductDetailDto reqModel)
         {
