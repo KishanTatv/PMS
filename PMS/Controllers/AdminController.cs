@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PMS.Entity;
 using PMS.Entity.Models;
+using PMS.Entity.Validation;
 using PMS.Service.Interface;
 
 namespace PMS.Controllers
@@ -35,6 +37,12 @@ namespace PMS.Controllers
             return data;
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetCategoryById(int categoryId)
+        {
+            JsonResult data = await _adminService.GetCategoryById(categoryId);
+            return data;
+        }
 
         [HttpPost("[action]")]
         public async Task<ActionResult> AddCategory(CategoryDto reqModel)
@@ -54,6 +62,13 @@ namespace PMS.Controllers
         public async Task<ActionResult> GetCover([FromQuery] PageCommonDto requestData)
         {
             JsonResult data = await _adminService.GetCover(requestData);
+            return data;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult> GetCoverById(int coverId)
+        {
+            JsonResult data = await _adminService.GetCoverById(coverId);
             return data;
         }
 
@@ -79,6 +94,13 @@ namespace PMS.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult> CheckExistingProduct([FromQuery] string name, int id)
+        {
+            JsonResult data = await _adminService.CheckExistingProduct(name, id);
+            return data;
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult> GetProductById(int productId)
         {
             JsonResult data = await _adminService.GetProductById(productId);
@@ -88,8 +110,18 @@ namespace PMS.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> AddUpdateProduct(ProductDetailDto reqModel)
         {
-            JsonResult data = await _adminService.AddUpdateProduct(reqModel);
-            return data;
+            var validator = new ProductValidator();
+            var res = validator.Validate(reqModel);
+            if (res.IsValid)
+            {
+                JsonResult data = await _adminService.AddUpdateProduct(reqModel);
+                return data;
+            }
+            else
+            {
+                List<string> errors = res.Errors.Select(e => e.ErrorMessage).ToList();
+                return JsonResponse.ModelValidationErrorResponse(errors);
+            }
         }
 
         [HttpDelete("[action]")]

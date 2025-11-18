@@ -9,14 +9,17 @@ namespace PMS.Service.Interface
         Task<JsonResult> AddNewUser(UserDto user);
 
         Task<JsonResult> GetCategory(PageCommonDto requestData);
+        Task<JsonResult> GetCategoryById(int categoryId);
         Task<JsonResult> AddCategory(CategoryDto category);
         Task<JsonResult> DeleteCategory(int categoryId);
 
         Task<JsonResult> GetCover(PageCommonDto requestData);
+        Task<JsonResult> GetCoverById(int coverId);
         Task<JsonResult> AddUpdateCover(CoverDto category);
         Task<JsonResult> DeleteCover(int coverId);
 
         Task<JsonResult> GetProduct(PageCommonDto requestData);
+        Task<JsonResult> CheckExistingProduct(string name, int id);
         Task<JsonResult> GetProductById(int productId);
         Task<JsonResult> AddUpdateProduct(ProductDetailDto product);
         Task<JsonResult> DeleteProduct(int productId);

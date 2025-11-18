@@ -25,7 +25,9 @@
                     <td>@item.Name</td>
                     <td>@item.DisplayOrder</td>
                     <td>
-                        <a asp-action="delete">Delete</a>
+                        <a asp-action="Create" asp-route-categoryId="@item.Id">Edit</a>
+                        &nbsp;
+                        <a asp-action="Delete" asp-route-categoryId="@item.Id">Delete</a>
                     </td>
                 </tr>
             }

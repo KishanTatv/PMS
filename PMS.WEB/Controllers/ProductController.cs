@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using PMS.Entity;
 using PMS.Entity.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PMS.WEB.Controllers
 {
@@ -27,6 +28,23 @@ namespace PMS.WEB.Controllers
                 data = apiResponse.Data;
             }
             return View(data);
+        }
+
+        public async Task<IActionResult> IsExistingPrpoductName(string title, int id)
+       {
+            bool isExist = false;
+            HttpResponseMessage response = await _httpClient.GetAsync($"Admin/CheckExistingProduct?name={title}&id={id}");
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                ApiResponse<bool>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<bool>>(jsonResponse);
+                isExist = apiResponse.Data;
+            }
+            if (isExist)
+            {
+                return Json($"Product name '{title}' is already in use.");
+            }
+            return Json(true);
         }
 
         public async Task<IActionResult> Create(int productId)

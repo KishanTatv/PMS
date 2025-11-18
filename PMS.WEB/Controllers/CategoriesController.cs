@@ -28,9 +28,20 @@ namespace PMS.WEB.Controllers
             return View(data);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int categoryId)
         {
-            return View();
+            CategoryDto categoryDto = new CategoryDto();
+            if (categoryId > 0)
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCategoryById?categoryId={categoryId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    ApiResponse<CategoryDto>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<CategoryDto>>(jsonResponse);
+                    categoryDto = apiResponse.Data;
+                }
+            }
+            return View(categoryDto);
         }
 
         public IActionResult IsCategoryNameInUse(string name)
@@ -52,9 +63,20 @@ namespace PMS.WEB.Controllers
             ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
             if (apiResponse != null && apiResponse.Result)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public async Task<IActionResult> Delete(int categoryId)
+        {
+            HttpResponseMessage response = _httpClient.DeleteAsync($"Admin/DeleteCategory?categoryId={categoryId}").Result;
+            ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
+            if (apiResponse != null && apiResponse.Result)
+            {
+                return RedirectToAction("Index");
+            }
+            return View("Index");
         }
     }
 }

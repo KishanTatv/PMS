@@ -40,5 +40,11 @@ namespace PMS.Entity
             return GenerateResponse(false, string.Empty, HttpStatusCode.InternalServerError, message);
         }
 
+        public static JsonResult ModelValidationErrorResponse(List<string> error)
+        {
+            string combinedErrors = string.Join("; ", error);
+            return GenerateResponse(false, string.Empty, HttpStatusCode.UnprocessableEntity, combinedErrors);
+        }
+
     }
 }

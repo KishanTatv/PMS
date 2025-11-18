@@ -19,7 +19,7 @@ namespace PMS.Data
             return await _readDbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public async Task<T?> GetFirstOrDefault(Expression<Func<T, bool>> filter)
         {
             return await _readDbContext.Set<T>().Where(filter).FirstOrDefaultAsync();
         }

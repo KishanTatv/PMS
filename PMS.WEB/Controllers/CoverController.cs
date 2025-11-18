@@ -28,9 +28,20 @@ namespace PMS.WEB.Controllers
             return View(data);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int coverId)
         {
-            return View();
+            CoverDto coverDto = new CoverDto();
+            if(coverId > 0)
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"Admin/GetCoverById?coverId={coverId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    ApiResponse<CoverDto>? apiResponse = JsonConvert.DeserializeObject<ApiResponse<CoverDto>>(jsonResponse);
+                    coverDto = apiResponse.Data;
+                }
+            }
+            return View(coverDto);
         }
 
         public IActionResult AddCover(CoverDto coverDto)
@@ -46,6 +57,17 @@ namespace PMS.WEB.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public async Task<IActionResult> Delete(int coverId)
+        {
+            HttpResponseMessage response = _httpClient.DeleteAsync($"Admin/DeleteCover?coverId={coverId}").Result;
+            ApiResponse<string>? apiResponse = response.Content.ReadFromJsonAsync<ApiResponse<string>>().Result;
+            if (apiResponse != null && apiResponse.Result)
+            {
+                return RedirectToAction("Index");
+            }
+            return View("Index");
         }
     }
 }

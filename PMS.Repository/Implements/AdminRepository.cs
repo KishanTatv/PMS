@@ -54,6 +54,21 @@ namespace PMS.Repository.Implements
             return new CategoryMapper().MapList(categoryData);
         }
 
+        public async Task<CategoryDto> GetCategoryById(int categoryId)
+        {
+            var category = await _categoryRepository.GetById(categoryId);
+            if (category != null)
+            {
+                return new CategoryDto()
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    DisplayOrder = category.DisplayOrder
+                };
+            }
+            return null!;
+        }
+
         public async Task<int> AddNewCategory(CategoryDto category)
         {
             var newCategory = new Category()
@@ -62,7 +77,7 @@ namespace PMS.Repository.Implements
                 DisplayOrder = category.DisplayOrder,
                 CreatedDateTime = DateTime.UtcNow
             };
-            if(category.Id > 0)
+            if (category.Id > 0)
             {
                 newCategory.Id = category.Id;
                 await _categoryRepository.Update(newCategory);
@@ -91,6 +106,20 @@ namespace PMS.Repository.Implements
         {
             var categoryData = await _coverRepository.GetAll(skip: requestData.PageNumber * requestData.PageSize, take: requestData.PageSize);
             return new CoverMapper().MapList(categoryData);
+        }
+
+        public async Task<CoverDto> GetCoverById(int coverId)
+        {
+            var cover = await _coverRepository.GetById(coverId);
+            if (cover != null)
+            {
+                return new CoverDto()
+                {
+                    Id = cover.Id,
+                    Name = cover.Name
+                };
+            }
+            return null!;
         }
 
         public async Task<int> AddUpdateCover(CoverDto category)
@@ -142,6 +171,12 @@ namespace PMS.Repository.Implements
                 take: requestData.PageSize
                 );
             return productData;
+        }
+
+        public async Task<bool> CheckExistingProduct(string name, int id)
+        {
+            var product = await _productRepository.GetFirstOrDefault(p => p.Title.ToLower() == name.ToLower() && p.Id != id);
+            return product != null;
         }
 
         public async Task<ProductDetailDto> GetProductById(int productId)

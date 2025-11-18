@@ -6,7 +6,7 @@ namespace PMS.Data.Interface
     {
         Task<T?> GetById(int id);
 
-        Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter);
+        Task<T?> GetFirstOrDefault(Expression<Func<T, bool>> filter);
 
         Task<IEnumerable<T>> GetAll(
             Expression<Func<T, bool>>? filter = null, 

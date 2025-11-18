@@ -11,6 +11,7 @@
 <h1>Create Category</h1>
 <form action="AddCategory">
     @* <div asp-validation-summary="All"></div> *@
+    <input asp-for="Id" class="form-control d-none" />
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />

@@ -37,6 +37,12 @@ namespace PMS.Service.Implements
             return JsonResponse.SuccessResponse(categoryList, string.Format(Messages.success, "Category list", "retrived"));
         }
 
+        public async Task<JsonResult> GetCategoryById(int categoryId)
+        {
+            CategoryDto category = await _adminRepository.GetCategoryById(categoryId);
+            return JsonResponse.SuccessResponse(category, string.Format(Messages.success, "Category detail", "retrived"));
+        }
+
         public async Task<JsonResult> AddCategory(CategoryDto requestModel)
         {
             int rowCount = await _adminRepository.AddNewCategory(requestModel);
@@ -63,6 +69,12 @@ namespace PMS.Service.Implements
             return JsonResponse.SuccessResponse(coverList, string.Format(Messages.success, "Cover list", "retrived"));
         }
 
+        public async Task<JsonResult> GetCoverById(int coverId)
+        {
+            CoverDto cover = await _adminRepository.GetCoverById(coverId);
+            return JsonResponse.SuccessResponse(cover, string.Format(Messages.success, "Cover detail", "retrived"));
+        }
+
         public async Task<JsonResult> AddUpdateCover(CoverDto requestModel)
         {
             int rowCount = await _adminRepository.AddUpdateCover(requestModel);
@@ -87,6 +99,12 @@ namespace PMS.Service.Implements
         {
             IEnumerable<ProductShowDto> productList = await _adminRepository.GetProduct(requestData);
             return JsonResponse.SuccessResponse(productList, string.Format(Messages.success, "Product list", "retrived"));
+        }
+
+        public async Task<JsonResult> CheckExistingProduct(string name, int id)
+        {
+            bool isExist = await _adminRepository.CheckExistingProduct(name, id);
+            return JsonResponse.SuccessResponse(isExist, string.Empty);
         }
 
         public async Task<JsonResult> GetProductById(int productId)

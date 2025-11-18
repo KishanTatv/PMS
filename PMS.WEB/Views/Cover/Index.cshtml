@@ -23,7 +23,9 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>
-                        <a asp-action="delete">Delete</a>
+                        <a asp-action="Create" asp-route-coverId="@item.Id">Edit</a>
+                        &nbsp;
+                        <a asp-action="Delete" asp-route-coverId="@item.Id">Delete</a>
                     </td>
                 </tr>
             }

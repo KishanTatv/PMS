@@ -6,11 +6,12 @@
 @{
     ViewData["Title"] = "Create Cover";
 }
-@model PMS.Entity.Models.CategoryDto
+@model PMS.Entity.Models.CoverDto
 
 <h1>Create Cover</h1>
 <form action="AddCover">
     @* <div asp-validation-summary="All"></div> *@
+    <input asp-for="Id" class="form-control d-none" />
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
