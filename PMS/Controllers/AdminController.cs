@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using PMS.Entity;
 using PMS.Entity.Models;
 using PMS.Entity.Validation;
@@ -110,18 +111,15 @@ namespace PMS.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> AddUpdateProduct(ProductDetailDto reqModel)
         {
-            var validator = new ProductValidator();
-            var res = validator.Validate(reqModel);
+            ProductValidator validator = new ProductValidator();
+            ValidationResult res = validator.Validate(reqModel);
             if (res.IsValid)
             {
                 JsonResult data = await _adminService.AddUpdateProduct(reqModel);
                 return data;
             }
-            else
-            {
-                List<string> errors = res.Errors.Select(e => e.ErrorMessage).ToList();
-                return JsonResponse.ModelValidationErrorResponse(errors);
-            }
+            List<string> errors = res.Errors.Select(e => e.ErrorMessage).ToList();
+            return JsonResponse.ModelValidationErrorResponse(errors);
         }
 
         [HttpDelete("[action]")]
