@@ -4,6 +4,7 @@ using PMS.Entity;
 using PMS.Entity.Models;
 using PMS.Repository.Interface;
 using PMS.Service.Interface;
+using System.Net;
 
 namespace PMS.Service.Implements
 {
@@ -22,7 +23,7 @@ namespace PMS.Service.Implements
             {
                 return JsonResponse.SuccessResponse(token, string.Format(Messages.success, "User", "logged in"));
             }
-            return JsonResponse.FailureResponse("Invalid login attempt");
+            return JsonResponse.FailureResponse(Messages.invalidCredential, HttpStatusCode.Unauthorized);
         }
 
         public async Task<JsonResult> Register(RegisterModel model)
@@ -32,7 +33,7 @@ namespace PMS.Service.Implements
             {
                 return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "User", "registered"));
             }
-            return JsonResponse.FailureResponse("User registration failed");
+            return JsonResponse.FailureResponse(Messages.unExpectedError);
         }
     }
 }
