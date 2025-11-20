@@ -1,19 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PMS.Data.Interface;
 using PMS.Data.Models;
 
 namespace PMS.Data.Data
 {
-    public class PmsReadDbContext : DbContext, IReadDbContext
+    public class PmsReadDbContext : IdentityDbContext<IdentityUser>, IReadDbContext
     {
+
         public PmsReadDbContext(DbContextOptions<PmsReadDbContext> options)
             : base(options) { }
 
-        public virtual DbSet<User> Users { get; set; } = null!;
+        //public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<CoverType> CoverTypes { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

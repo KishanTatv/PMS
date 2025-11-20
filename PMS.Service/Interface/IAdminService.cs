@@ -5,9 +5,6 @@ namespace PMS.Service.Interface
 {
     public interface IAdminService
     {
-        Task<JsonResult> GetAllUsers();
-        Task<JsonResult> AddNewUser(UserDto user);
-
         Task<JsonResult> GetCategory(PageCommonDto requestData);
         Task<JsonResult> GetCategoryById(int categoryId);
         Task<JsonResult> AddCategory(CategoryDto category);

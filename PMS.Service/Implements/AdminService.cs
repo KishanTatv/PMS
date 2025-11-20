@@ -15,22 +15,6 @@ namespace PMS.Service.Implements
             _adminRepository = adminRepository;
         }
 
-        public async Task<JsonResult> GetAllUsers()
-        {
-            IEnumerable<UserDto> userList = await _adminRepository.GetAllUsers();
-            return JsonResponse.SuccessResponse(userList, string.Format(Messages.success, "User list", "retrived"));
-        }
-
-        public async Task<JsonResult> AddNewUser(UserDto user)
-        {
-            int rowCount = await _adminRepository.AddNewUser(user);
-            if (rowCount <= 0)
-            {
-                return JsonResponse.FailureResponse(string.Format(Messages.failure, "add", "new user"));
-            }
-            return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "New user", "added"));
-        }
-
         public async Task<JsonResult> GetCategory(PageCommonDto requestData)
         {
             IEnumerable<CategoryDto> categoryList = await _adminRepository.GetCategory(requestData);

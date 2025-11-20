@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PMS.Data.Interface;
 using PMS.Data.Models;
 
 namespace PMS.Data.Data;
 
-public partial class PmsWriteDbContext : DbContext, IWriteDbContext
+public partial class PmsWriteDbContext : IdentityDbContext<IdentityUser>, IWriteDbContext
 {
 
     public PmsWriteDbContext(DbContextOptions<PmsWriteDbContext> options)
@@ -13,7 +15,6 @@ public partial class PmsWriteDbContext : DbContext, IWriteDbContext
 
     }
 
-    public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
     public virtual DbSet<CoverType> CoverTypes { get; set; } = null!;
     public virtual DbSet<Product> Products { get; set; } = null!;
@@ -24,3 +25,6 @@ public partial class PmsWriteDbContext : DbContext, IWriteDbContext
     }
 
 }
+
+//Add-Migration InitProduct -Context PmsWriteDbContext -StartupProject PMS -Project PMS.Data
+

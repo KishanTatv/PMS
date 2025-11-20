@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Entity;
 using PMS.Entity.Models;
@@ -17,20 +18,7 @@ namespace PMS.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("[action]")]
-        public async Task<ActionResult> GetAllUsers()
-        {
-            JsonResult data = await _adminService.GetAllUsers();
-            return data;
-        }
-
-        [HttpPost("[action]")]
-        public async Task<ActionResult> CreateNewUser(UserDto reqModel)
-        {
-            JsonResult data = await _adminService.AddNewUser(reqModel);
-            return data;
-        }
-
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult> GetCategory([FromQuery] PageCommonDto requestData)
         {

@@ -8,44 +8,16 @@ namespace PMS.Repository.Implements
     public class AdminRepository : IAdminRepository
     {
 
-        private readonly IGenericRepository<User> _userRepository;
         private readonly IGenericRepository<Category> _categoryRepository;
         private readonly IGenericRepository<CoverType> _coverRepository;
         private readonly IGenericRepository<Product> _productRepository;
 
-        public AdminRepository(IGenericRepository<User> userRepository, IGenericRepository<Category> categoryRepository, IGenericRepository<CoverType> coverRepository, IGenericRepository<Product> productRepository)
+        public AdminRepository(IGenericRepository<Category> categoryRepository, IGenericRepository<CoverType> coverRepository, IGenericRepository<Product> productRepository)
         {
-            _userRepository = userRepository;
             _categoryRepository = categoryRepository;
             _coverRepository = coverRepository;
             _productRepository = productRepository;
         }
-
-        #region User Methods
-        public async Task<IEnumerable<UserDto>> GetAllUsers()
-        {
-            var userData = await _userRepository.GetAll(orderBy: o => o.OrderByDescending(u => u.CreatedDate));
-            return new UserMapper().MapList(userData);
-        }
-
-        public async Task<int> AddNewUser(UserDto user)
-        {
-            var newUser = new User()
-            {
-                Id = Guid.NewGuid(),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                PhoneNo = user.PhoneNo,
-                Email = user.Email,
-                CreatedBy = "1",
-                CreatedDate = DateTime.UtcNow,
-                LastUpdatedDate = DateTime.UtcNow
-            };
-            await _userRepository.Add(newUser);
-            return await _userRepository.SaveChangesAsync();
-
-        }
-        #endregion
 
         #region Category 
         public async Task<IEnumerable<CategoryDto>> GetCategory(PageCommonDto requestData)
