@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PMS;
 using PMS.Common.Middleware;
 using PMS.Data;
 using PMS.Data.Data;
 using PMS.Data.Interface;
+using PMS.Jwt;
 using PMS.Repository;
 using PMS.Service;
 
@@ -24,15 +24,21 @@ builder.Services.AddDbContext<PmsReadDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ReadConnection"))
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<PmsReadDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureAuthentication(builder.Configuration);
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IReadDbContext, PmsReadDbContext>();
 builder.Services.AddScoped<IWriteDbContext, PmsWriteDbContext>();
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
 builder.Services.AddServices();
 builder.Services.AddRepositories();
-
 builder.Services.AddSingleton<Mapper>();
+
+builder.Services.AddSwagerGenerator();
 
 var app = builder.Build();
 
@@ -47,6 +53,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
