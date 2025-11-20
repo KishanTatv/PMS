@@ -11,25 +11,25 @@ namespace PMS.Entity.Validation
                 .GreaterThanOrEqualTo(0);
 
             RuleFor(pro => pro.Title)
-                .NotEmpty().WithMessage("Title is required.")
-                .MinimumLength(2).WithMessage("Title must be at least 2 characters.")
-                .MaximumLength(20).WithMessage("Title must be 20 characters or fewer.");
+                .NotEmpty().WithMessage(string.Format(ValidationMessage.required, "Title"))
+                .MinimumLength(2).WithMessage(string.Format(ValidationMessage.minLength, "Title", 2))
+                .MaximumLength(20).WithMessage(string.Format(ValidationMessage.maxLength, "Title", 20));
 
             RuleFor(pro => pro.ISBN)
-                .NotEmpty().WithMessage("ISBN is required.");
+                .NotEmpty().WithMessage(string.Format(ValidationMessage.required, "ISBN"));
 
             RuleFor(pro => pro.Price)
-                .InclusiveBetween(1, 10000).WithMessage("Price must be between 1 and 10000.");
+                .InclusiveBetween(1, 10000).WithMessage(string.Format(ValidationMessage.range, "Price", 1, 10000));
 
             RuleFor(pro => pro.Author)
-                .NotEmpty().WithMessage("Author is required.")
-                .MaximumLength(20).WithMessage("Author name must be 20 characters or fewer.");
+                .NotEmpty().WithMessage(string.Format(ValidationMessage.required, "Author"))
+                .MaximumLength(20).WithMessage(string.Format(ValidationMessage.maxLength, "Author", 20));
 
             RuleFor(pro => pro.CategoryId)
-                .GreaterThan(0).WithMessage("Category is required.");
+                .GreaterThan(0).WithMessage(string.Format(ValidationMessage.required, "Category"));
 
             RuleFor(pro => pro.CoverTypeId)
-                .GreaterThan(0).WithMessage("Cover Type is required.");
+                .GreaterThan(0).WithMessage(string.Format(ValidationMessage.required, "CoverType"));
         }
     }
 }

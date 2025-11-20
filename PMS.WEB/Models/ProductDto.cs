@@ -30,7 +30,7 @@ namespace PMS.Entity.Models
     }
 
 
-    public class ProductShowDto
+    public struct ProductShowDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
