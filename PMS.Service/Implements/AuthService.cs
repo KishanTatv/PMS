@@ -35,5 +35,21 @@ namespace PMS.Service.Implements
             }
             return JsonResponse.FailureResponse(Messages.unExpectedError);
         }
+
+        public async Task<JsonResult> ChangePassword(ChangePasswordModel model)
+        {
+            var user = await _authRepository.ValidUserName(model.Username);
+            if (user != null)
+            {
+                bool isChanged = await _authRepository.ChangePassword(user, model);
+                if (isChanged)
+                {
+                    return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "Password", "changed"));
+                }
+                return JsonResponse.FailureResponse(string.Format(Messages.failure, "user password", "update"));
+            }
+            return JsonResponse.FailureResponse(string.Format(Messages.notFound, "User"), HttpStatusCode.NotFound);
+
+        }
     }
 }

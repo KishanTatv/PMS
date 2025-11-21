@@ -20,6 +20,12 @@ namespace PMS.Repository.Implements
             _configuration = configuration;
         }
 
+        public async Task<IdentityUser?> ValidUserName(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return user;
+        }
+
         public async Task<bool> Register(RegisterModel model)
         {
             var user = new IdentityUser { UserName = model.Username, Email = model.Email };
@@ -36,7 +42,7 @@ namespace PMS.Repository.Implements
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(model.Username);
+                var user = await ValidUserName(model.Username);
                 JwtSettingDto jwtSettingDto = _configuration.GetSection("Jwt").Get<JwtSettingDto>()!;
                 jwtSettingDto.ExpiresIn = DateTime.Now.AddMinutes(30);
                 var token = JwtToken.GenerateToken(user!, jwtSettingDto);
@@ -45,6 +51,11 @@ namespace PMS.Repository.Implements
             return string.Empty;
         }
 
+        public async Task<bool> ChangePassword(IdentityUser user, ChangePasswordModel model)
+        {
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            return result.Succeeded;
+        }
 
     }
 }

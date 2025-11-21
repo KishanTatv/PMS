@@ -27,5 +27,12 @@ namespace PMS.Controllers
             JsonResult data = await _authService.Login(model);
             return data;
         }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            JsonResult data = await _authService.ChangePassword(model);
+            return data;
+        }
     }
 }
