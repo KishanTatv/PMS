@@ -9,6 +9,7 @@ namespace PMS.Service
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
+            //services.AddKeyedScoped<IAuthService, AuthService>("Admin");
             services.AddScoped<IAdminService, AdminService>();
 
             return services;

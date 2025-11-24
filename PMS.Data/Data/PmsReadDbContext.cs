@@ -16,6 +16,10 @@ namespace PMS.Data.Data
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<CoverType> CoverTypes { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Company> Companies { get; set; } = null!;
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
+        public virtual DbSet<OrderHeader> OrderHeaders { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
