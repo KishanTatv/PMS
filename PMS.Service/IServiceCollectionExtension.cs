@@ -12,6 +12,10 @@ namespace PMS.Service
             //services.AddKeyedScoped<IAuthService, AuthService>("Admin");
             services.AddScoped<IAdminService, AdminService>();
 
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+
             return services;
         }
     }

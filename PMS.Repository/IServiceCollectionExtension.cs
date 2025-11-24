@@ -10,6 +10,10 @@ namespace PMS.Repository
         {
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             return services;
         }
     }
