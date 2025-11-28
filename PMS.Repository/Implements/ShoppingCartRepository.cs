@@ -3,7 +3,6 @@ using PMS.Data.Interface;
 using PMS.Data.Models;
 using PMS.Entity.Models;
 using PMS.Repository.Interface;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace PMS.Repository.Implements
@@ -12,15 +11,16 @@ namespace PMS.Repository.Implements
     {
         private readonly IGenericRepository<ShoppingCart> _shoppingCartRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string? userId;
         public ShoppingCartRepository(IGenericRepository<ShoppingCart> shoppingCartRepository, IHttpContextAccessor httpContextAccessor)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _httpContextAccessor = httpContextAccessor;
+            userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
         public async Task<CartDto> GetCartInfo()
         {
-            string? userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             IEnumerable<CartProductDto> data = await _shoppingCartRepository.GetAllProjected(
                 filter: sc => sc.ApplicationUserId == userId,
                 selector: x => new CartProductDto
@@ -38,7 +38,7 @@ namespace PMS.Repository.Implements
 
         public async Task<int> CreateShoppingCart(ShoopingCartDto shoppingCart)
         {
-            ShoppingCart? alredyInCart = await _shoppingCartRepository.GetFirstOrDefault(filter: sc => sc.ProductId == shoppingCart.ProductId && sc.ApplicationUserId == shoppingCart.ApplicationUserId);
+            ShoppingCart? alredyInCart = await _shoppingCartRepository.GetFirstOrDefault(filter: sc => sc.ProductId == shoppingCart.ProductId && sc.ApplicationUserId == userId);
             if (alredyInCart != null)
             {
                 alredyInCart.Count += shoppingCart.Count;
@@ -51,7 +51,7 @@ namespace PMS.Repository.Implements
                 {
                     ProductId = shoppingCart.ProductId,
                     Count = shoppingCart.Count,
-                    ApplicationUserId = shoppingCart.ApplicationUserId,
+                    ApplicationUserId = userId!,
                 };
                 await _shoppingCartRepository.Add(cartData);
                 return await _shoppingCartRepository.SaveChangesAsync();

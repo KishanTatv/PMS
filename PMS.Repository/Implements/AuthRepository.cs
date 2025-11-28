@@ -29,7 +29,7 @@ namespace PMS.Repository.Implements
 
         public async Task<bool> Register(RegisterModel model)
         {
-            var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
+            var user = new ApplicationUser { Name = model.Name, UserName = model.Username, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -47,6 +47,7 @@ namespace PMS.Repository.Implements
                 JwtSettingDto jwtSettingDto = _configuration.GetSection("Jwt").Get<JwtSettingDto>()!;
                 jwtSettingDto.ExpiresIn = DateTime.Now.AddMinutes(30);
                 var token = JwtToken.GenerateToken(user!, jwtSettingDto);
+                await _signInManager.SignInAsync(user!, true);
                 return token;
             }
             return string.Empty;
