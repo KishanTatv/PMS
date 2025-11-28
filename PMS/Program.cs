@@ -4,6 +4,7 @@ using PMS.Common.Middleware;
 using PMS.Data;
 using PMS.Data.Data;
 using PMS.Data.Interface;
+using PMS.Data.Models;
 using PMS.Jwt;
 using PMS.Repository;
 using PMS.Service;
@@ -24,8 +25,8 @@ builder.Services.AddDbContext<PmsReadDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ReadConnection"))
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<PmsReadDbContext>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<PmsWriteDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.ConfigureAuthentication(builder.Configuration);
@@ -33,6 +34,7 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IReadDbContext, PmsReadDbContext>();
 builder.Services.AddScoped<IWriteDbContext, PmsWriteDbContext>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddServices();
 builder.Services.AddRepositories();
@@ -53,9 +55,23 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
+//addDBSetup();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 await app.RunAsync();
+
+
+//void addDBSetup()
+//{
+//    var scope = app.Services.CreateScope();
+//    using(var context = scope.ServiceProvider.GetRequiredService<PmsWriteDbContext>())
+//    {
+//        // here we careted DB if not exists and apply migration
+//        // call interface in getService to avoid direct dependency
+//        // also add default superAdmin on that method
+//        //context.Database.Migrate();
+//    }
+//}

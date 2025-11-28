@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using PMS.Common.JWT;
+using PMS.Data.Models;
 using PMS.Entity.Models;
 using PMS.Repository.Interface;
 
@@ -9,18 +10,18 @@ namespace PMS.Repository.Implements
     public class AuthRepository : IAuthRepository
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
 
-        public AuthRepository(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
+        public AuthRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
         }
 
-        public async Task<IdentityUser?> ValidUserName(string username)
+        public async Task<ApplicationUser?> ValidUserName(string username)
         {
             var user = await _userManager.FindByNameAsync(username);
             return user;
@@ -28,7 +29,7 @@ namespace PMS.Repository.Implements
 
         public async Task<bool> Register(RegisterModel model)
         {
-            var user = new IdentityUser { UserName = model.Username, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -51,11 +52,17 @@ namespace PMS.Repository.Implements
             return string.Empty;
         }
 
-        public async Task<bool> ChangePassword(IdentityUser user, ChangePasswordModel model)
+        public async Task<bool> ChangePassword(ApplicationUser user, ChangePasswordModel model)
         {
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             return result.Succeeded;
         }
 
+        public async Task<bool> ResetPassword(ApplicationUser user, string password)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user!);
+            var result = await _userManager.ResetPasswordAsync(user!, token, password);
+            return result.Succeeded;
+        }
     }
 }

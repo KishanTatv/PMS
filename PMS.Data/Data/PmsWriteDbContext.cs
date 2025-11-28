@@ -6,7 +6,7 @@ using PMS.Data.Models;
 
 namespace PMS.Data.Data;
 
-public partial class PmsWriteDbContext : IdentityDbContext<IdentityUser>, IWriteDbContext
+public partial class PmsWriteDbContext : IdentityDbContext<ApplicationUser>, IWriteDbContext
 {
 
     public PmsWriteDbContext(DbContextOptions<PmsWriteDbContext> options)
