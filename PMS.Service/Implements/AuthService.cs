@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using PMS.Common;
 using PMS.Entity;
 using PMS.Entity.Models;
@@ -49,7 +50,21 @@ namespace PMS.Service.Implements
                 return JsonResponse.FailureResponse(string.Format(Messages.failure, "user password", "update"));
             }
             return JsonResponse.FailureResponse(string.Format(Messages.notFound, "User"), HttpStatusCode.NotFound);
+        }
 
+        public async Task<JsonResult> ResetPassword(string userName, string password)
+        {
+            var user = await _authRepository.ValidUserName(userName);
+            if (user != null)
+            {
+                bool isReset = await _authRepository.ResetPassword(user, password);
+                if (isReset)
+                {
+                    return JsonResponse.SuccessResponse(string.Empty, string.Format(Messages.success, "Password", "reset"));
+                }
+                return JsonResponse.FailureResponse(string.Format(Messages.failure, "user password", "reset"));
+            }
+            return JsonResponse.FailureResponse(string.Format(Messages.notFound, "User"), HttpStatusCode.NotFound);
         }
     }
 }

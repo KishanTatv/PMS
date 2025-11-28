@@ -13,7 +13,9 @@ namespace PMS.Common.JWT
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id ?? string.Empty),
+                new Claim(ClaimTypes.Name, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

@@ -8,5 +8,6 @@ namespace PMS.Service.Interface
         Task<JsonResult> Register(RegisterModel model);
         Task<JsonResult> Login(LoginModel model);
         Task<JsonResult> ChangePassword(ChangePasswordModel model);
+        Task<JsonResult> ResetPassword(string userName, string password);
     }
 }
